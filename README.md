@@ -20,10 +20,10 @@ Selanjutnya ketikan perintah
     composer install
 ```
 
--   Copy file .env.example ke .env dan edit kredensial database di sana
+-   Copy file .env.example ke .env dan edit kredensial database di sana. (perintah dibawah ini untuk CMD di Windows)
 
 ```bash
-    cp .env.example .env
+    copy .env.example .env
 ```
 
 -   Selanjutnya generate app key
