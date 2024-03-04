@@ -1,0 +1,41 @@
+{
+  "name": "Multikit",
+  "short_name": "Multikit",
+  "lang": "en-US",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "#2a6354",
+  "description": "Multikit app",
+  "icons": [{
+      "src": "assets/images/pwa-logo/48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/pwa-logo/72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/pwa-logo/96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/pwa-logo/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/pwa-logo/168.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/pwa-logo/512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
