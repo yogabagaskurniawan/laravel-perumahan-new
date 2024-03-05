@@ -10,11 +10,11 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-6">
+                {{-- <div class="col-6">
                     <a href="notification.html" class="header-right">
                         <i class="ri-notification-2-line"></i>
                     </a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </header>
