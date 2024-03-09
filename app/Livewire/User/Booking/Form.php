@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 class Form extends Component
 {
     use LivewireAlert;
+    public $booking;
+    public $wishlist;
+    public $slug;
     public $phone;
     public $name;
     public function render()
@@ -25,6 +28,7 @@ class Form extends Component
                 'phone' => ['required', 'numeric', 'digits_between:10,15'],
             ]);
             session()->put('phone', $cekUser->phone);
+            session()->put('name', $cekUser->name);
             $this->flash('success', 'Berhasil masuk akun');
         } else {
             // Validasi input jika pengguna baru
@@ -34,14 +38,19 @@ class Form extends Component
             ]);
             // Simpan data baru
             session()->put('phone', $this->phone); 
+            session()->put('name', $this->name); 
             Customer::create([
                 'name' => $this->name,
                 'phone' => $this->phone,
             ]);
             $this->flash('success', 'Berhasil menyimpan data');
-        }        
-        // Redirect ke halaman booking
-        return $this->redirect('/booking', navigate: true);
+        } 
+        if ($this->booking) {
+            return $this->redirect('/booking', navigate: true);
+        }elseif ($this->slug) {
+            return $this->redirect('/search/detail/'.$this->slug, navigate: true);
+        }elseif ($this->wishlist) {
+            return $this->redirect('/wishlist', navigate: true);
+        }
     }
-
 }

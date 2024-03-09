@@ -1,15 +1,5 @@
 <div>
     <livewire:navigation.navigationUser />
-    <!-- header Section Start -->
-    {{-- <header class="header-style-4 py-0">
-        <div class="top-header px-15 position-relative">
-            <div class="left-header">
-                <ul class="name-date">
-                    <li>Booking</li>
-                </ul>
-            </div>
-        </div>
-    </header> --}}
     <header class="header-style-4 py-0">
         <div class="top-header px-15 position-relative">
             <div class="left-header">
@@ -18,7 +8,7 @@
                 </ul>
             </div>
 
-            @if(isset($customerName))
+            @if(session()->has('phone') && session()->has('name'))
                 <div class="right-header text-uppercase" data-bs-toggle="offcanvas">
                     {{ $customerName }} 
                     <div wire:click="forgetSession" class="d-flex align-items-center">
@@ -30,7 +20,7 @@
         </div>
     </header>
     <section class="section-t-space mb-5 pb-4">
-        @if (isset($bookings))
+        @if (session()->has('phone') && session()->has('name'))
             @if ($bookings->isNotEmpty())
                 <div class="custom-container">
                     <div class="title-2 title-2-sm">
@@ -71,7 +61,7 @@
             <div class="landing-title landing-title-2 ms-3">
                 <h4>Silahkan isi data terlebih dahulu sebelum booking</h4>
             </div>
-            <livewire:user.booking.form />
+            <livewire:user.booking.form :booking="$booking"/>
         @endif
     </section>
 </div>

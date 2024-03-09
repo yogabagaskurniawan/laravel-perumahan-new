@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->integer('home_id');
-            $table->integer('user_id');
+            $table->integer('customer_id');
             $table->enum('status', ['pending', 'process', 'accept'])->default('pending'); 
             $table->timestamps();
         });

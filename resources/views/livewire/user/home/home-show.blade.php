@@ -9,11 +9,19 @@
 
             <ul class="right-right">
                 <li>
+                    @if (session()->has('phone') && session()->has('name'))
                     <button wire:click="wishlist" type="submit" class="rounded-circle border-0">
                         <a id="heart-box">
                             <i class="ri-heart-3-line"></i>
                         </a>
                     </button>
+                    @else
+                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="submit" class="rounded-circle border-0">
+                            <a id="heart-box">
+                                <i class="ri-heart-3-line"></i>
+                            </a>
+                        </button>
+                    @endif
                 </li>
             </ul>
         </div>
@@ -175,20 +183,37 @@
             </div>
         </div>
     </section>
-    <div class="review-bottom-box" style="z-index: 9999999999999999">
+    <div class="review-bottom-box" style="z-index: 1">
         <div class="review-price">
             <div class="btn continue-button">{{ $homes->getPriceAttribute() }}</div>
         </div>
-        {{-- @if ($homePesan->status == 'terjual' || $homePesan->status == 'tersewa')
+        @if ($homes->status == 'terjual' || $homes->status == 'tersewa')
             <div class="alert bg-opacity-75 fs-6 bg-warning btn continue-button fst-italic" role="alert">
-                <span class="text-uppercase" style="font-size: 14px !important">{{ $homePesan->status }}</span>
+                <span class="text-uppercase" style="font-size: 14px !important">{{ $homes->status }}</span>
             </div>
-        @elseif (!$homePesan->bookings || $homePesan->bookings->status == 'pending') --}}
-            <button wire:click="pesan" type="submit" class="btn btn-gradient btn-gradient-3 continue-button">Pesan</button>
-        {{-- @else
+        @elseif (!$homes->bookings || $homes->bookings->status == 'pending')
+            @if (session()->has('phone') && session()->has('name'))
+                <button wire:click="pesan" type="submit" class="btn btn-gradient btn-gradient-3 continue-button">Pesan</button>
+            @else
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="submit" class="btn btn-gradient btn-gradient-3 continue-button">Pesan</button>
+            @endif
+        @else
             <div class="alert bg-opacity-75 fs-6 bg-warning btn continue-button fst-italic" role="alert">
                 <span class="text-uppercase" style="font-size: 14px !important">Sudah dipesan</span>
             </div>
-        @endif --}}
+        @endif
     </div>
+
+    <!-- Modal Start -->
+    <div wire:ignore.self class="modal fade cancel-modal" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>Silahkan isi data terlebih dahulu, kemudian lanjut pilih properti</h4>
+                    <livewire:user.booking.form :slug="$slug"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal End -->
 </div>
