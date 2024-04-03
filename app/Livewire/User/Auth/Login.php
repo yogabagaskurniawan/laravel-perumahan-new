@@ -26,7 +26,7 @@ class Login extends Component
         if (auth()->attempt($credentials)) {
             session()->regenerate();
             $this->flash('success', 'Login Berhasil');
-            return redirect('/admin/homelist');
+            return redirect('/admin/list-admin');
         }
 
         $this->reset();
