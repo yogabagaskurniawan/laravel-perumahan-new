@@ -11,6 +11,7 @@ use Livewire\Attributes\Layout;
 use Illuminate\Support\Str;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 class Edit extends Component
 {
     use LivewireAlert;
@@ -47,16 +48,6 @@ class Edit extends Component
 
         }
     }
-    // delete home image
-    // public function deleteImage($idImage)
-    // {
-    //     $homeImageDelete = HomeImage::where('home_id', $this->id)->where('id',$idImage)->first();
-    //     if ($homeImageDelete) {
-    //         $homeImageDelete->delete();
-    //     }
-    //     $this->alert('success', 'Berhasil menghapus gambar properti ini');
-    //     return back();
-    // }
     public function deleteImage($idImage)
     {
         $homeImageDelete = HomeImage::where('home_id', $this->id)->where('id',$idImage)->first();
@@ -85,15 +76,10 @@ class Edit extends Component
             'number_of_bedrooms' => 'required|numeric',
             'number_of_bathrooms' => 'required|numeric',
             'status' => 'required|in:dijual,sewa,terjual,tersewa',
-            'desc' => 'required',           
+            'desc' => 'required',
+            'sketch_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'floorplan' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-            // Periksa jika input gambar tidak kosong
-        if (!empty($this->homeImage)) {
-            $validatedData['homeImage'] = 'array|min:1|max:5';
-            $validatedData['homeImage.*'] = 'image|mimes:jpeg,png,jpg|max:2048';
-        }
-
 
         if ($validatedData) {
             $home = HomeList::find($homeId);
@@ -117,6 +103,10 @@ class Edit extends Component
 
             // Cek apakah ada perubahan pada gambar sketch
             if ($this->sketch_image) {
+                // Hapus gambar yang lama
+                if ($home->sketch_image) {
+                    Storage::disk('public')->delete('images/homeLists/' . $home->sketch_image);
+                }
                 $sketchPath = time() . '_' . $this->sketch_image->getClientOriginalName();
                 $this->sketch_image->storeAs('images/homeLists', $sketchPath, 'public');
                 $home->sketch_image = $sketchPath;
@@ -124,38 +114,49 @@ class Edit extends Component
 
             // Cek apakah ada perubahan pada gambar floorplan
             if ($this->floorplan) {
+                // Hapus gambar yang lama
+                if ($home->floorplan) {
+                    Storage::disk('public')->delete('images/homeLists/' . $home->floorplan);
+                }
                 $floorplanPath = time() . '_' . $this->floorplan->getClientOriginalName();
                 $this->floorplan->storeAs('images/homeLists', $floorplanPath, 'public');
                 $home->floorplan = $floorplanPath;
             }
 
             // Simpan perubahan pada rumah
-            // Simpan perubahan pada rumah
             $home->save();
 
             // Update gambar rumah
             if (!empty($this->homeImage)) {
-                $totalImages = $home->homeImage()->count(); // Menghitung jumlah gambar yang sudah ada
-                $maxImages = 5 - $totalImages; // Maksimal gambar yang bisa ditambahkan
+                // Lakukan validasi untuk gambar homeImage
+                $vakidateHomeImage =  $this->validate([
+                    'homeImage' => 'array|min:1|max:5',
+                    'homeImage.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+                ]);
 
-                // Periksa apakah jumlah gambar yang akan ditambahkan melebihi batas maksimum
-                if (count($this->homeImage) > $maxImages) {
-                    $this->alert('warning', 'Total gambar properti melebihi 5 file'); // back
-                    return back();
-                } else {
-                    // Iterasi untuk setiap gambar yang akan disimpan
-                    foreach ($this->homeImage as $key => $image) {
-                        // Cek apakah jumlah gambar yang akan disimpan telah mencapai batas maksimum
-                        if ($key < $maxImages) {
-                            $path = time() . '_' . $image->getClientOriginalName();
-                            $image->storeAs('images/detailHomeImages', $path, 'public');
-                            HomeImage::create([
-                                'home_id' => $home->id,
-                                'image' => $path,
-                            ]);
-                        } else {
-                            // Jika jumlah gambar sudah mencapai batas maksimum, hentikan iterasi
-                            break;
+                if ($vakidateHomeImage) {
+                    $totalImages = $home->homeImage()->count(); // Menghitung jumlah gambar yang sudah ada
+                    $maxImages = 5 - $totalImages; // Maksimal gambar yang bisa ditambahkan
+
+                    // Periksa apakah jumlah gambar yang akan ditambahkan melebihi batas maksimum
+                    if (count($this->homeImage) > $maxImages) {
+                        $this->alert('warning', 'Total gambar properti melebihi 5 file'); // back
+                        return back();
+                    } else {
+                        // Iterasi untuk setiap gambar yang akan disimpan
+                        foreach ($this->homeImage as $key => $image) {
+                            // Cek apakah jumlah gambar yang akan disimpan telah mencapai batas maksimum
+                            if ($key < $maxImages) {
+                                $path = time() . '_' . $image->getClientOriginalName();
+                                $image->storeAs('images/detailHomeImages', $path, 'public');
+                                HomeImage::create([
+                                    'home_id' => $home->id,
+                                    'image' => $path,
+                                ]);
+                            } else {
+                                // Jika jumlah gambar sudah mencapai batas maksimum, hentikan iterasi
+                                break;
+                            }
                         }
                     }
                 }
@@ -176,6 +177,8 @@ class Edit extends Component
             $homeImages = HomeImage::where('home_id', $homes->id)->get();
     
             return view('livewire.admin.homelist.edit', compact('homes','homeCategory', 'homeImages'));
+        }else{
+            abort(404);
         }
     }
 }

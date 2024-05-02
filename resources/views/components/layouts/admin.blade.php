@@ -102,12 +102,12 @@
 
             <ul class="navbar-item theme-brand flex-row  text-center">
                 <li class="nav-item theme-logo">
-                    <a href="index.html">
+                    <a href="/">
                         <img src="/src/assets/img/logo_perumahan1.png" class="navbar-logo" alt="logo">
                     </a>
                 </li>
                 <li class="nav-item theme-text">
-                    <a href="index.html" class="nav-link"> Perumahan Griya Nusantara </a>
+                    <a href="/" class="nav-link"> Perumahan Griya Nusantara </a>
                 </li>
             </ul>
             <ul class="navbar-item flex-row ms-lg-auto ms-0 action-area">
@@ -135,7 +135,7 @@
                                     👋
                                 </div>
                                 <div class="media-body">
-                                    <h5>Shaun Park</h5>
+                                    <h5>{{ Auth::user()->name }}</h5>
                                     <p>Project Leader</p>
                                 </div>
                             </div>
@@ -178,12 +178,12 @@
                 <div class="navbar-nav theme-brand flex-row  text-center">
                     <div class="nav-logo">
                         <div class="nav-item theme-logo">
-                            <a href="./index.html">
-                                <img src="/src/assets/img/logo.svg" class="navbar-logo" alt="logo">
+                            <a href="/">
+                                <img src="/src/assets/img/logo_perumahan1.png" class="navbar-logo" alt="logo">
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="./index.html" class="nav-link"> CORK </a>
+                            <a href="/" class="nav-link"> Perumahan Griya Nusantara </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">

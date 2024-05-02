@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('company_name');
             $table->longText('desc');
-            $table->string('address')->nullable();
             $table->string('phone');
             $table->string('image_promotion')->nullable();
             $table->string('image_logo')->nullable();

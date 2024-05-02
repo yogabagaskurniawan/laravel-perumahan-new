@@ -106,8 +106,8 @@
                     <div class="row mb-4">
                         <div class="col-sm-12">
                             <label class="mb-0">Upload Gambar Properti</label>
-                            <p class="text-danger mb-0">*maksimal 5 file</p>
-                            <input wire:ignore wire:model="homeImage"  type="file" name="imageSketsa" id="imageSketsa" class="form-control @error('imageSketsa') has-error @enderror" placeholder="image" onchange="previewMulti('.imageDemo', this.files)" multiple>
+                            <p class="text-danger mb-0">*maksimal 5 file dan diusahakan ukuran gambar maksimal 660 x 492</p>
+                            <input wire:ignore wire:model="homeImage"  type="file" name="homeImage" id="imageSketsa" class="form-control @error('homeImage') has-error @enderror" placeholder="image" onchange="previewMulti('.imageDemo', this.files)" multiple>
                             @error('homeImage') <span class="error text-danger ">{{ $message }}</span> @enderror 
                             <div wire:ignore class="row mt-3 imageDemo">
                             </div> 
